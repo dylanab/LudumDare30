@@ -7,8 +7,8 @@ public class SystemController : MonoBehaviour {
 
 	public int owner = 0;
 
-	private float metalPerTurn = 0f;
-	private float millitaryPerTurn = 0f;
+	public float metalPerTurn = 0f;
+	public float unitsPerTurn = 0f;
 	private bool slotFilled = false;
 
 	//Update Time variables (used for debug, won't be located here in final version)
@@ -24,8 +24,6 @@ public class SystemController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(Input.GetButtonDown("Jump"))
-			metalPerTurn = 10f;
 		currenTime += Time.deltaTime;
 		if(currenTime >= updateInterval){
 			UpdateTime();
@@ -39,6 +37,7 @@ public class SystemController : MonoBehaviour {
 	#region Utility Funtions
 
 	private void UpdateTime(){
+
 	}
 
 	#endregion
@@ -46,6 +45,18 @@ public class SystemController : MonoBehaviour {
 	#region Public Interface
 
 	public float GetMetalPerTurn(){ return metalPerTurn; }
+
+	public float GetUnitsPerTurn(){ return unitsPerTurn; }
+
+	public void AddResources(float metal, float units){
+		metalPerTurn += metal;
+		unitsPerTurn += units;
+	}
+
+	public void RemoveResources(float metal, float units){
+		metalPerTurn -= metal;
+		unitsPerTurn -= units;
+	}
 
 	#endregion
 }

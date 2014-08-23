@@ -33,7 +33,6 @@ public class ResourceManager : Singleton<ResourceManager> {
             BankedMetal = 0;
             currentTime = 0;
             gameIsPaused = false;
-            InvokeRepeating("Tick", initDelay, turnDelay);
         }
 
         void Update()
@@ -100,7 +99,7 @@ public class ResourceManager : Singleton<ResourceManager> {
         }
 
         //Add a unit to total units
-        public void AddUnits(int unitsToAdd)
+	public void AddUnits(int unitsToAdd){}
 
     #endregion
 
