@@ -22,7 +22,7 @@ public class CameraController : MonoBehaviour {
 		tex.SetPixel(1, 1, Color.white);
 
 		box = GetComponent<BoxCollider2D>();
-		box.size = new Vector2((camera.pixelWidth + pixelBuffer) / 100, (camera.pixelHeight + pixelBuffer) / 100);
+        box.size = new Vector2((camera.pixelWidth + pixelBuffer) / 50, (camera.pixelHeight + pixelBuffer) / 50);//new Vector2((camera.pixelWidth + pixelBuffer) / 100, (camera.pixelHeight + pixelBuffer) / 100);
 
 	}
 	
@@ -58,11 +58,23 @@ public class CameraController : MonoBehaviour {
 			float metal = systemInfo.GetMetalPerTurn();
 			float units = systemInfo.GetUnitsPerTurn();
 			float yPos = camera.pixelHeight - systemPos.y;
+<<<<<<< HEAD
+			GUI.Box (new Rect(systemPos.x - 50, yPos - 50, 100, 25), "metal : " + metal);
+=======
 
 			style.normal.background = tex;
 			GUI.color = Color.cyan;
 			GUI.Box (new Rect(systemPos.x, yPos, 150, 25), "Metal: " + metal + " Units: " + units, style);
+>>>>>>> origin/master
 		}
+
+        //draw larger menu 
+        float menuBoxHeight = 140 * 1.3f;
+        float menuBoxWidth = 140 * 1.3f;
+        float menuBarHeight = 120 * 1.3f;
+        float menuBarWidth = Screen.width - menuBoxWidth - 10;
+        GUI.Box(new Rect(0 + 5, Screen.height - menuBoxHeight - 5, menuBoxWidth, menuBoxHeight), "TEST");
+        GUI.Box(new Rect(0 + 5 + menuBoxWidth + 1, Screen.height - menuBarHeight - 5, menuBarWidth, menuBarHeight), "TEST");
 	}
 
 }

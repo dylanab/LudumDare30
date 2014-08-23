@@ -99,7 +99,14 @@ public class ResourceManager : Singleton<ResourceManager> {
         }
 
         //Add a unit to total units
+<<<<<<< HEAD
+        public void AddUnits(int unitsToAdd)
+        {
+
+        }
+=======
 	public void AddUnits(int unitsToAdd){}
+>>>>>>> origin/master
 
     #endregion
 
