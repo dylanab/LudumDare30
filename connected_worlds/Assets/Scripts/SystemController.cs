@@ -77,9 +77,9 @@ public class SystemController : MonoBehaviour {
 			for(int i = 0; i < outgoingLanes.Count; i++){
 				//cache current lane and current lane's metal amount
 				LaneController currentLane = outgoingLanes[i];
-				float currentMetal = outgoingLanes[i].GetMetalEnRoute();
+				float currentMetal = currentLane.GetMetalEnRoute();
 				if(currentMetal > 0){
-					outgoingLanes[i].SetRoute(this.gameObject, 
+					currentLane.SetRoute(this.gameObject, currentLane.endSystem, Mathf.Max(currentMetal + metalPerTurn, 0f), currentLane.GetUnitsEnRoute());
 				}
 
 			}
