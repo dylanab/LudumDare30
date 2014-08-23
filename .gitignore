@@ -52,3 +52,6 @@ Assembly-UnityScript.pidb
 Assembly-UnityScript.unityProj
  
 *.svd
+
+#IGNORE THIS SHIT SERIOUSLY FUCK.
+connected_worlds/Library/*
