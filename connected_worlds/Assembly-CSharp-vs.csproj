@@ -48,6 +48,8 @@
   <ItemGroup>
      <Compile Include="Assets\Beardsoft\PersistentSingleton.cs" />
      <Compile Include="Assets\Beardsoft\Singleton.cs" />
+     <Compile Include="Assets\Scripts\InputManager.cs" />
+     <Compile Include="Assets\Scripts\SystemController.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
