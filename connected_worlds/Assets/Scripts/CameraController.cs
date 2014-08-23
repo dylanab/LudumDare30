@@ -11,8 +11,16 @@ public class CameraController : MonoBehaviour {
 	private BoxCollider2D box;
 	private List<GameObject> systems = new List<GameObject>();
 
+	//GUI STYLE VARIABLES
+	GUIStyle style;
+	Texture2D tex;
+
 	// Use this for initialization
 	void Start () {
+		style = new GUIStyle();
+		tex = new Texture2D(1,1);
+		tex.SetPixel(1, 1, Color.white);
+
 		box = GetComponent<BoxCollider2D>();
 		box.size = new Vector2((camera.pixelWidth + pixelBuffer) / 100, (camera.pixelHeight + pixelBuffer) / 100);
 
@@ -50,7 +58,11 @@ public class CameraController : MonoBehaviour {
 			float metal = systemInfo.GetMetalPerTurn();
 			float units = systemInfo.GetUnitsPerTurn();
 			float yPos = camera.pixelHeight - systemPos.y;
-			GUI.Box (new Rect(systemPos.x, yPos, 150, 25), "Metal: " + metal + " Units: " + units);
+
+			style.normal.background = tex;
+			GUI.color = Color.cyan;
+			GUI.Box (new Rect(systemPos.x, yPos, 150, 25), "Metal: " + metal + " Units: " + units, style);
 		}
 	}
+
 }

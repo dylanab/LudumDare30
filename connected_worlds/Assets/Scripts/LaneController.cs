@@ -16,6 +16,7 @@ public class LaneController : MonoBehaviour {
 	private SystemController startSystemInfo;
 	private SystemController endSystemInfo;
 
+	private LineRenderer line;
 	private bool _activated = false;
 	//DEBUG
 	private bool _set = false;
@@ -28,6 +29,8 @@ public class LaneController : MonoBehaviour {
 		//DEBUG -Cory
 		startSystemInfo = startSystem.GetComponent<SystemController>();
 		endSystemInfo = endSystem.GetComponent<SystemController>();
+		//Cache LineRenderer
+		line = GetComponent<LineRenderer>();
 	}
 
 	//DEBUG -Cory
@@ -42,6 +45,8 @@ public class LaneController : MonoBehaviour {
 				_set = true;
 			}
 		}
+		line.SetPosition(0, startSystem.transform.position);
+		line.SetPosition(1, endSystem.transform.position);
 	}
 
 	void OnDrawGizmos(){
@@ -50,6 +55,14 @@ public class LaneController : MonoBehaviour {
 			Gizmos.DrawLine(startSystem.transform.position, endSystem.transform.position);
 		}
 	}
+
+	#endregion
+
+	#region Getters and Setters (or mutators and accessors if you're a fuckin' nerd)
+
+	public float GetMetalEnRoute(){ return metalEnRoute; }
+	public float GetUnitsEnRoute(){ return unitsEnRoute; }
+
 
 	#endregion
 
@@ -68,6 +81,7 @@ public class LaneController : MonoBehaviour {
 		if(_activated){
 			endSystemInfo.RemoveResources(metalEnRoute, unitsEnRoute);
 			startSystemInfo.AddResources(metalEnRoute, unitsEnRoute);
+			endSystemInfo.ResourceCheck();
 		}
 
 		//Reset variables to new values
@@ -77,7 +91,10 @@ public class LaneController : MonoBehaviour {
 		endSystemInfo = endSystem.GetComponent<SystemController>();
 		metalEnRoute = metal;
 		unitsEnRoute = units;
-		_activated = true;
+		if(metalEnRoute == 0 && unitsEnRoute == 0)
+			_activated = false;
+		else
+			_activated = true;
 
 		//Route the new resources to their target
 		startSystemInfo.RemoveResources(metalEnRoute, unitsEnRoute);
