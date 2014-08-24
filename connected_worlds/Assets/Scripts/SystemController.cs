@@ -6,6 +6,7 @@ public class SystemController : MonoBehaviour {
 
 	#region Properties & Variables
 
+	public string name = "";
 	public int owner = 0;
 
 	public float metalPerTurn = 0f;
@@ -16,9 +17,8 @@ public class SystemController : MonoBehaviour {
 	private float updateInterval = 3f;
 	private float currenTime = 0f;
 
-	//List of outgoing and incoming lanes
-	private List<LaneController> outgoingLanes = new List<LaneController>();
-	private List<LaneController> incomingLanes = new List<LaneController>();
+	//List of all lanes connected to this system
+	private List<LaneController> lanes = new List<LaneController>();
 
 	#endregion
 
@@ -45,6 +45,21 @@ public class SystemController : MonoBehaviour {
 
 	}
 
+	private void CheckResources(){
+		CheckMetal();
+		CheckUnits();
+	}
+
+	private void CheckMetal(){
+		if(metalPerTurn < 0){	//Metal per turn is below zero so we're sending more than we have 
+
+		}
+	}
+
+	private void CheckUnits(){
+
+	}
+
 	#endregion
 
 	#region Public Interface
@@ -61,29 +76,6 @@ public class SystemController : MonoBehaviour {
 	public void RemoveResources(float metal, float units){
 		metalPerTurn -= metal;
 		unitsPerTurn -= units;
-	}
-	//Add and remove functions of outgoing lane list
-	public void AddOutgoingLane(LaneController lane){ outgoingLanes.Add(lane); }
-	public void RemoveOutgoingLane(LaneController lane){ outgoingLanes.Remove(lane); }
-
-	//Add and remove functions for incoming lane list
-	public void AddIncomingLane(LaneController lane){ incomingLanes.Add(lane); }
-	public void RemoveIncomingLane(LaneController lane){ incomingLanes.Remove(lane); }
-
-	public void ResourceCheck(){
-		//Check to see if metal/turn < 0
-		if(metalPerTurn < 0){
-			//Loop through all outgoing lanes
-			for(int i = 0; i < outgoingLanes.Count; i++){
-				//cache current lane and current lane's metal amount
-				LaneController currentLane = outgoingLanes[i];
-				float currentMetal = currentLane.GetMetalEnRoute();
-				if(currentMetal > 0){
-					currentLane.SetRoute(this.gameObject, currentLane.endSystem, Mathf.Max(currentMetal + metalPerTurn, 0f), currentLane.GetUnitsEnRoute());
-				}
-
-			}
-		}
 	}
 
 	#endregion
