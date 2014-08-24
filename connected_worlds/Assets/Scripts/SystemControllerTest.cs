@@ -82,10 +82,10 @@ public class SystemControllerTest : MonoBehaviour {
 			for(int i = 0; i < outgoingLanes.Count; i++){
 				//cache current lane and current lane's metal amount
 				LaneController currentLane = outgoingLanes[i];
-				float currentMetal = currentLane.GetMetalEnRoute();
-				if(currentMetal > 0){
-					currentLane.SetRoute(this.gameObject, currentLane.endSystem, Mathf.Max(currentMetal + metalPerTurn, 0f), currentLane.GetUnitsEnRoute());
-				}
+				//float currentMetal = currentLane.GetMetalEnRoute();
+				//if(currentMetal > 0){
+					//currentLane.SetRoute(this.gameObject, currentLane.endSystem, Mathf.Max(currentMetal + metalPerTurn, 0f), currentLane.GetUnitsEnRoute());
+				//}
 
 			}
 		}

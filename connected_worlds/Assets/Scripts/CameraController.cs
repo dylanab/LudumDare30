@@ -48,8 +48,9 @@ public class CameraController : MonoBehaviour {
 			SystemControllerTest systemInfo = systems[i].GetComponent<SystemControllerTest>();
 			Vector3 systemPos = camera.WorldToScreenPoint(systems[i].transform.position);
 			float metal = systemInfo.GetMetalPerTurn();
+            float units = systemInfo.GetUnitsPerTurn();
 			float yPos = camera.pixelHeight - systemPos.y;
-			GUI.Box (new Rect(systemPos.x - 50, yPos - 50, 100, 25), "metal : " + metal);
+			GUI.Box (new Rect(systemPos.x - 50, yPos - 50, 120, 25), "metal : " + metal + " units : " + units);
             GUI.Label(new Rect(systemPos.x - 50, yPos + 20, 100, 25), systemInfo.getName());
 		}
 
