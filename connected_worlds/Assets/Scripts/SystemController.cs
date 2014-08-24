@@ -17,8 +17,8 @@ public class SystemController : MonoBehaviour {
 	private float updateInterval = 3f;
 	private float currenTime = 0f;
 
-	//List of all lanes connected to this system
-	private List<LaneController> lanes = new List<LaneController>();
+	//List of all lanes connected to this system 
+	public List<LaneController> lanes = new List<LaneController>();
 
 	#endregion
 
@@ -52,7 +52,19 @@ public class SystemController : MonoBehaviour {
 
 	private void CheckMetal(){
 		if(metalPerTurn < 0){	//Metal per turn is below zero so we're sending more than we have 
-
+			Debug.Log (gameObject.name + " has " + metalPerTurn + " metal. finding a route to get some back from.");
+			//We need to loop through all our lanes and see if we're sending metal from them
+			for(int i =0; i < lanes.Count; i++){
+				float sentMetal = lanes[i].GetMetalFromSystem(gameObject.name);
+				if(sentMetal > 0){
+					Debug.Log("looks like " + lanes[i].gameObject.name + " is taking " + sentMetal + " from us. Going to take " + Mathf.Min (sentMetal, -metalPerTurn) + " back.");
+					lanes[i].RemoveFromRoute(gameObject.name, Mathf.Min(sentMetal, -metalPerTurn), 0f);
+				}
+				if(metalPerTurn >=0){
+					Debug.Log("We're all good now.");
+					return;
+				}
+			}
 		}
 	}
 
@@ -76,6 +88,7 @@ public class SystemController : MonoBehaviour {
 	public void RemoveResources(float metal, float units){
 		metalPerTurn -= metal;
 		unitsPerTurn -= units;
+		CheckResources();
 	}
 
 	#endregion
