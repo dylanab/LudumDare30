@@ -11,16 +11,8 @@ public class CameraController : MonoBehaviour {
 	private BoxCollider2D box;
 	private List<GameObject> systems = new List<GameObject>();
 
-	//GUI STYLE VARIABLES
-	GUIStyle style;
-	Texture2D tex;
-
 	// Use this for initialization
 	void Start () {
-		style = new GUIStyle();
-		tex = new Texture2D(1,1);
-		tex.SetPixel(1, 1, Color.white);
-
 		box = GetComponent<BoxCollider2D>();
         box.size = new Vector2((camera.pixelWidth + pixelBuffer) / 50, (camera.pixelHeight + pixelBuffer) / 50);//new Vector2((camera.pixelWidth + pixelBuffer) / 100, (camera.pixelHeight + pixelBuffer) / 100);
 
@@ -53,19 +45,12 @@ public class CameraController : MonoBehaviour {
 
 	void OnGUI(){
 		for(int i = 0; i < systems.Count; i++){
-			SystemController systemInfo = systems[i].GetComponent<SystemController>();
+			SystemControllerTest systemInfo = systems[i].GetComponent<SystemControllerTest>();
 			Vector3 systemPos = camera.WorldToScreenPoint(systems[i].transform.position);
 			float metal = systemInfo.GetMetalPerTurn();
-			float units = systemInfo.GetUnitsPerTurn();
 			float yPos = camera.pixelHeight - systemPos.y;
-<<<<<<< HEAD
 			GUI.Box (new Rect(systemPos.x - 50, yPos - 50, 100, 25), "metal : " + metal);
-=======
-
-			style.normal.background = tex;
-			GUI.color = Color.cyan;
-			GUI.Box (new Rect(systemPos.x, yPos, 150, 25), "Metal: " + metal + " Units: " + units, style);
->>>>>>> origin/master
+            GUI.Label(new Rect(systemPos.x - 50, yPos + 20, 100, 25), systemInfo.getName());
 		}
 
         //draw larger menu 
@@ -76,5 +61,4 @@ public class CameraController : MonoBehaviour {
         GUI.Box(new Rect(0 + 5, Screen.height - menuBoxHeight - 5, menuBoxWidth, menuBoxHeight), "TEST");
         GUI.Box(new Rect(0 + 5 + menuBoxWidth + 1, Screen.height - menuBarHeight - 5, menuBarWidth, menuBarHeight), "TEST");
 	}
-
 }
