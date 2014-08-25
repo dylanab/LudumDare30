@@ -9,15 +9,16 @@ public class GuiManager : Singleton<GuiManager>
 
     public GameObject target;
     public GameObject starPrefab;
-    public GameObject SpaceLane; 
+    public GameObject SpaceLane;
+    public GameObject LineRendererPrefab;
+    public GameObject ProductionFacilityPrefab;
+    public GameObject MiningFacilityPrefab;
+
     public GUISkin guiSkin;
     public List<GameObject> systems;
     public Camera camera;
     public Texture productionIcon;
     public Texture miningIcon;
-    //public GUISkin laneSkin;
-    //public GUISkin productionSkin;
-    //public GUISkin miningSkin;
 
     private GUISkin currentSkin;
     private string text;
@@ -25,7 +26,11 @@ public class GuiManager : Singleton<GuiManager>
     private string objectType;
     private Texture objectTexture;
 
-    private SystemControllerTest sysInfo;
+    public AudioSource audio; 
+    public AudioClip clickSound;
+    public AudioClip buildSound;
+
+    private SystemController sysInfo;
     
 
     //menu vars
@@ -36,7 +41,9 @@ public class GuiManager : Singleton<GuiManager>
 
     void Start()
     {
-        
+        //clickSource = clickAudio.GetComponent<AudioSource>();
+        //buildSource = buildAudio.GetComponent<AudioSource>();
+        audio = this.GetComponent<AudioSource>();
         currentSkin = guiSkin;
         text = "start";
     }
@@ -49,10 +56,11 @@ public class GuiManager : Singleton<GuiManager>
 
     public void SwitchGui(GameObject obj)
     {
+        audio.PlayOneShot(clickSound);
         if (obj.tag == "System")
         {
             //test
-            sysInfo = obj.GetComponent<SystemControllerTest>();
+            sysInfo = obj.GetComponent<SystemController>();
             target = obj;
             objectName = sysInfo.name;
             objectType = "System";
@@ -93,11 +101,12 @@ public class GuiManager : Singleton<GuiManager>
             for (int i = 0; i < systems.Count; i++)
             {
                 Vector3 size = systems[i].renderer.bounds.size;
-                SystemControllerTest systemInfo = systems[i].GetComponent<SystemControllerTest>();
+                SystemController systemInfo = systems[i].GetComponent<SystemController>();
                 Vector3 systemPos = camera.WorldToScreenPoint(systems[i].transform.position);
                 float yPos = camera.pixelHeight - systemPos.y;
                 string buildingType = systemInfo.buildingType;
                 Texture icon = null;
+
                 if (buildingType == "production")
                 {
                     icon = productionIcon;
@@ -105,7 +114,6 @@ public class GuiManager : Singleton<GuiManager>
                     icon = miningIcon;
                 }
                 
-
                 if (systemInfo.buildingType == "production")
                 {
                     GUI.Label(new Rect(systemPos.x - (size.x) - 6, yPos - (size.y) - 33, 30, 30), icon, "systemName");
@@ -131,11 +139,12 @@ public class GuiManager : Singleton<GuiManager>
             //if there isn't a battle here
 
             GUI.Label(new Rect(0 + menuBoxWidth + (menuBarWidth * .55f), Screen.height - (menuBoxHeight * .8f) + 20, 100, 40), "Build Facilities", "blanklabel");
-            GUI.Label(new Rect(0 + menuBoxWidth + (menuBarWidth * .25f), Screen.height - (menuBoxHeight * .8f) + 20, 100, 40), "Build SpaceLanes", "blanklabel");
+            GUI.Label(new Rect(0 + menuBoxWidth + (menuBarWidth * .25f), Screen.height - (menuBoxHeight * .8f) + 20, 100, 40), "Build Space Lanes", "blanklabel");
             if (GUI.Button(new Rect(0 + menuBoxWidth + (menuBarWidth * .25f), Screen.height - (menuBoxHeight * .5f) + 40 + 10, 200, 30), "Create a Space Lane -  50 metal"))
             {
+                audio.PlayOneShot(clickSound);
                 LaneBuilder laneBuilder = this.gameObject.AddComponent<LaneBuilder>();
-                LineRenderer lineRenderer = this.gameObject.AddComponent<LineRenderer>();
+                GameObject lineRenderer = Instantiate(LineRendererPrefab, this.gameObject.transform.position, Quaternion.identity) as GameObject;
                 laneBuilder.placeLaneStart(target, lineRenderer, SpaceLane);
             }
 
@@ -145,7 +154,7 @@ public class GuiManager : Singleton<GuiManager>
                 {
 
                     sysInfo.buildBuilding("production");
-                   
+                    audio.PlayOneShot(buildSound);
 
                     //objectTexture = productionIcon;
 
@@ -154,24 +163,50 @@ public class GuiManager : Singleton<GuiManager>
                 if (GUI.Button(new Rect(0 + menuBoxWidth + (menuBarWidth * .55f), Screen.height - (menuBoxHeight * .5f) + 40 + 10, 200, 30), "Create a Mine -  50 metal"))
                 {
                     sysInfo.buildBuilding("mining");
-                    //objectTexture = miningIcon;
+                    audio.PlayOneShot(buildSound);
                 }
             }
             else if (sysInfo.buildingType == "production")
             {
-                GUI.Label(new Rect(0 + menuBoxWidth + (menuBarWidth * .55f), Screen.height - (menuBoxHeight * .5f) + 10, 200, 30), "building level : " + sysInfo.buildingLevel, "blanklabel");
-                //if (GUI.Button(new Rect(10, 70, 50, 30), ""))
-                //{
-                    //Debug.Log("Clicked the button with text");
-               // }
+                if (sysInfo.buildingLevel == 0)
+                {
+                    GUI.Label(new Rect(0 + menuBoxWidth + (menuBarWidth * .55f), Screen.height - (menuBoxHeight * .5f) + 10, 200, 30), "Factory under construction", "blanklabel");
+                }
+                else
+                {
+                    GUI.Label(new Rect(0 + menuBoxWidth + (menuBarWidth * .55f), Screen.height - (menuBoxHeight * .5f) + 10, 200, 30), "building level : " + sysInfo.buildingLevel, "blanklabel");
+                    if (GUI.Button(new Rect(0 + menuBoxWidth + (menuBarWidth * .55f), Screen.height - (menuBoxHeight * .5f) + 40 + 10, 200, 30), "Upgrade Factory - " + (sysInfo.buildingLevel * 5) + " metal"))
+                    {
+                        sysInfo.buildBuilding("mining");
+                        audio.PlayOneShot(buildSound);
+                    }
+
+                    //DEBUG BUTTON
+                    if (GUI.Button(new Rect(0 + menuBoxWidth + (menuBarWidth * .55f), Screen.height - (menuBoxHeight * .5f) - 100, 200, 30), "DEBUG ADD METAL"))
+                    {
+                        ProductionController prod = sysInfo.prodController;
+                        prod.AddMetal(1);
+                        Debug.Log("adding one metal");
+                        Debug.Log("metal : " + prod.metal);
+                        //audio.PlayOneShot(buildSound);
+                    }
+                }
             }
             else if (sysInfo.buildingType == "mining")
             {
-                GUI.Label(new Rect(0 + menuBoxWidth + (menuBarWidth * .55f), Screen.height - (menuBoxHeight * .5f) + 10, 200, 30), "building level : " + sysInfo.buildingLevel, "blanklabel");
-                //if (GUI.Button(new Rect(10, 70, 50, 30), ""))
-                //{
-                   // Debug.Log("Clicked the button with text");
-                //}
+                if (sysInfo.buildingLevel == 0)
+                {
+                    GUI.Label(new Rect(0 + menuBoxWidth + (menuBarWidth * .55f), Screen.height - (menuBoxHeight * .5f) + 10, 200, 30), "Mine under construction", "blanklabel");
+                }
+                else
+                {
+                    GUI.Label(new Rect(0 + menuBoxWidth + (menuBarWidth * .55f), Screen.height - (menuBoxHeight * .5f) + 10, 200, 30), "building level : " + sysInfo.buildingLevel, "blanklabel");
+                    if (GUI.Button(new Rect(0 + menuBoxWidth + (menuBarWidth * .55f), Screen.height - (menuBoxHeight * .5f) + 40 + 10, 200, 30), "Upgrade Mine - " + (sysInfo.buildingLevel * 5) ))
+                    {
+                        sysInfo.buildBuilding("mining");
+                        audio.PlayOneShot(buildSound);
+                    }
+                }
             }
                 
         }
@@ -179,9 +214,6 @@ public class GuiManager : Singleton<GuiManager>
         GUI.Label(new Rect(0, Screen.height - menuBoxHeight, menuBoxWidth, menuBoxHeight), "");
         GUI.Label(new Rect(0 + 50, Screen.height - menuBoxHeight + 7, menuBoxWidth, 30), objectName, "blanklabel");
         GUI.DrawTexture(new Rect(0 + 41, Screen.height - menuBoxHeight + 55, 100, 100), objectTexture, ScaleMode.ScaleToFit, true, 0F);
-            //GUI.Box(new Rect(0 + 5, Screen.height - menuBoxHeight - 5, menuBoxWidth, menuBoxHeight), "");
-
-
         
         GUI.skin = null;
       

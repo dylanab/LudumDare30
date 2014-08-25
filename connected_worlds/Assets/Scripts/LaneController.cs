@@ -12,8 +12,14 @@ public class LaneController : MonoBehaviour {
 	public int upgradeLevel = 1;
 	public int maxUpgradeLevel = 5;
 
+    public GameObject LineRendererPrefab;
+    private GameObject lineRendererObj;
+    private LineRenderer line;
+    private bool lineSetup = false;
+
 	private int currentMetal = 0;	//Might store this in a LaneUpgrade object or something
 	private int nextUpgradeMetal;	//^^ Ditto ^^
+    
 
 	//Not sure if we need these
 	public SystemController system1;
@@ -31,8 +37,24 @@ public class LaneController : MonoBehaviour {
 	}
 	
 	void Update () {
-	
+        
+        if (system1 != null && system2 != null && !lineSetup)
+        {
+            lineRendererObj = Instantiate(LineRendererPrefab, this.gameObject.transform.position, Quaternion.identity) as GameObject;
+            line = lineRendererObj.GetComponent<LineRenderer>();
+            //line.material = new Material(Shader.Find("Particles/Additive"));
+            //lineRenderer.SetColors(c1, c2);
+            line.SetWidth(0.07F, 0.07F);
+            line.SetVertexCount(2);
+            Vector3 pos1 =  system1.transform.position;
+            Vector3 pos2 = system2.transform.position;
+            pos1.z = pos2.z = .4f;
+            line.SetPosition(0, pos1);
+            line.SetPosition(1, pos2);
+            lineSetup = true;
+        }
 	}
+
 
 	void OnDrawGizmos(){
 		Gizmos.color = Color.red;
@@ -80,6 +102,10 @@ public class LaneController : MonoBehaviour {
 		nextUpgradeMetal = 10*upgradeLevel;	//Might be removed
 		currentMetal = 0;					//Might be removed
 	}
+
+
+
+
 
 	#endregion
 }

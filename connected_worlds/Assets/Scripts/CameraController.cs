@@ -7,6 +7,7 @@ public class CameraController : MonoBehaviour {
 	public float deadZone = .1f;
 	public float moveSpeed = 10;
 	public float pixelBuffer = 50f;
+    public float scrollSpeed = 50f;
 
     public GUISkin spaceLaneSkin;
     public GUISkin systemLabelSkin;
@@ -32,6 +33,7 @@ public class CameraController : MonoBehaviour {
 	void Update () {
 		float h = 0f;
 		float v = 0f;
+    
 		if(Mathf.Abs (Input.GetAxis("Horizontal")) > deadZone){
 			h = Input.GetAxis("Horizontal") * moveSpeed * Time.deltaTime;
 		}
@@ -39,6 +41,21 @@ public class CameraController : MonoBehaviour {
 			v = Input.GetAxis("Vertical") * moveSpeed * Time.deltaTime;
 		}
 		transform.position += new Vector3(h, v, 0f);
+
+        /* 
+        if (Mathf.Abs(Input.GetAxis("Mouse ScrollWheel")) > 0f)
+        {
+            if (Camera.main.fieldOfView < 80 && Camera.main.fieldOfView > 20)
+            {
+                float camNearClip = Camera.main.nearClipPlane;
+                //float camFOV = Camera.main.fieldOfView;
+                float zoom = Input.GetAxis("Mouse ScrollWheel") * scrollSpeed ; //*scrollSpeed * Time.deltaTime;
+                Camera.main.fieldOfView += zoom;
+                Camera.main.nearClipPlane -= zoom;
+                
+            }
+        }
+         * */
 
         //update the visible object lists in the gui manager
         guiManager.systems = systems;

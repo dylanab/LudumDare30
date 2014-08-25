@@ -1,34 +1,27 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ProductionController : MonoBehaviour
-{
+public class MineController : MonoBehaviour {
 
-    public int metal;
-    public int level;
-    public int upgradePool;
-
-    public AudioSource audio;
-    public AudioClip resourceSound;
+    private int metal;
+    private int level;
+    private int upgradePool;
 
     public int metalToUpgrade;
     public bool upgrading = false;
 
-    // Use this for initialization
-    void Start()
-    {
-        audio = this.GetComponent<AudioSource>();
+	// Use this for initialization
+	void Start () {
+
         TimeCounter.ProductionTick += this.ProduceShips;
 
-        metal = 0;
+        metal = 10;
         upgradePool = 0;
         level = 0;
-        upgrading = true;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
+	}
+	
+	// Update is called once per frame
+	void Update () {
         if (upgrading)
         {
             if (upgradePool == metalToUpgrade)
@@ -42,7 +35,6 @@ public class ProductionController : MonoBehaviour
 
     public void ProduceShips()
     {
-        Debug.Log("Trying to produce ships");
         if (!upgrading)
         {
             for (int i = 0; i < level; i++)
@@ -69,16 +61,15 @@ public class ProductionController : MonoBehaviour
             metal += metalCount;
         }
 
-        audio.PlayOneShot(resourceSound);
-
         //TODO: play the resource sound; 
-
+        
     }
 
     public void UpgradeBuilding()
     {
         metalToUpgrade = (level + 1) * 5;
         upgrading = true;
+        
     }
-
+  
 }
