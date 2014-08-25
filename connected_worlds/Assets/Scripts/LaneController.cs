@@ -55,7 +55,6 @@ public class LaneController : MonoBehaviour {
         }
 	}
 
-
 	void OnDrawGizmos(){
 		Gizmos.color = Color.red;
 		Gizmos.DrawLine(system1.gameObject.transform.position, system2.gameObject.transform.position);
@@ -64,6 +63,12 @@ public class LaneController : MonoBehaviour {
 	#endregion
 
 	#region Transportation functions
+
+	public void AddToQueue(GameObject newShip){
+		waitingShips.Enqueue(newShip);
+		Debug.Log("Just added " + newShip.name + " to queue.");
+		Debug.Log ("Waiting Ships: " + waitingShips.Count);
+	}
 
 	private void MoveShips(){
 		for(int i = 0; i < upgradeLevel; i++){
