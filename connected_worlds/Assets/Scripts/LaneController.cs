@@ -57,7 +57,8 @@ public class LaneController : MonoBehaviour {
 	}
 
 	void OnDrawGizmos(){
-
+		Gizmos.color = Color.red;
+		Gizmos.DrawLine(system1.transform.position, system2.transform.position);
 	}
 
 	#endregion
@@ -104,19 +105,57 @@ public class LaneController : MonoBehaviour {
 	//Used to add resources to the route from the specified system
 	public void AddToRoute(string startSystemName, float metal, float units){
 		if(startSystemName == system1.name){
-			system1Info.RemoveResources(metal, units);
-			metalFrom1 += metal;
-			unitsFrom1 += units;
-			system2Info.AddResources(metal, units);
+			float adjustedMetal = Mathf.Min (metal, system1Info.GetMetalPerTurn());
+			float adjustedUnits = Mathf.Min (units, system1Info.GetUnitsPerTurn());
+			system1Info.RemoveResources(adjustedMetal, adjustedUnits);
+
+			metalFrom1 += adjustedMetal;
+			metalFrom2 = Mathf.Max (metalFrom2 - adjustedMetal, 0f);
+
+			unitsFrom1 += adjustedUnits;
+			unitsFrom2 = Mathf.Max (unitsFrom2 - adjustedUnits, 0f);
+
+			system2Info.AddResources(adjustedMetal, adjustedUnits);
 		}
 		else if(startSystemName == system2.name){
-			system2Info.RemoveResources(metal, units);
-			metalFrom2 += metal;
-			unitsFrom2 += units;
-			system1Info.AddResources(metal, units);
+			float adjustedMetal = Mathf.Min (metal, system2Info.GetMetalPerTurn());
+			float adjustedUnits = Mathf.Min (units, system2Info.GetUnitsPerTurn());
+			system2Info.RemoveResources(adjustedMetal, adjustedUnits);
+
+			metalFrom2 += adjustedMetal;
+			metalFrom1 = Mathf.Max (metalFrom1 - adjustedMetal, 0f);
+
+			unitsFrom2 += adjustedUnits;
+			unitsFrom1 = Mathf.Max (unitsFrom1 - adjustedUnits, 0f);
+
+			system1Info.AddResources(adjustedMetal, adjustedUnits);
 		}
 		else
 			Debug.LogError("Tried to add resources to a route that the given system is not part of");
+	}
+	//Used to remove resources from the route starting from the specified system
+	public void RemoveFromRoute(string startSystemName, float metal, float units){
+		if(startSystemName == system1.name){
+			float adjustedMetal = Mathf.Min (metal, system2Info.GetMetalPerTurn());
+			float adjustedUnits = Mathf.Min (units, system2Info.GetUnitsPerTurn());
+			system1Info.AddResources(adjustedMetal, adjustedUnits);
+
+			metalFrom1 -= adjustedMetal;
+
+			unitsFrom1 -= adjustedUnits;
+
+			system2Info.RemoveResources(adjustedMetal, adjustedUnits);
+		}
+		else if(startSystemName == system2.name){
+			float adjustedMetal = Mathf.Min (metal, system1Info.GetMetalPerTurn());
+			float adjustedUnits = Mathf.Min (units, system1Info.GetUnitsPerTurn());
+			system2Info.AddResources(adjustedMetal, adjustedUnits);
+			metalFrom2 -= adjustedMetal;
+			unitsFrom2 -= adjustedUnits;
+			system1Info.RemoveResources(adjustedMetal, adjustedUnits);
+		}
+		else
+			Debug.LogError("Tried to remove resources from a route that the given system is not part of");
 	}
 
 
