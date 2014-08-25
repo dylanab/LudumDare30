@@ -60,10 +60,6 @@ public class LaneController : MonoBehaviour {
         }
 	}
 
-	void OnDrawGizmos(){
-		Gizmos.color = Color.red;
-		Gizmos.DrawLine(system1.gameObject.transform.position, system2.gameObject.transform.position);
-	}
 
 	#endregion
 

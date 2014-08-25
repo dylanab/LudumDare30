@@ -50,7 +50,7 @@ public class MetalNavigation : MonoBehaviour {
 		nav._atNext = false;		//Whether or not the ship is at the system set to currentSystem
 		nav._arrived = false;		//Whether or not the ship has reached it's end destination
 		nav._arrivalInfo = false;
-		Debug.Log("AWAKE");
+		//Debug.Log("AWAKE");
 	}
 
 	void Start () {
@@ -86,7 +86,7 @@ public class MetalNavigation : MonoBehaviour {
 	}
 
 	public void StartOrbiting(){
-		Debug.Log ("STAR ORBIT");
+		//Debug.Log ("STAR ORBIT");
 		currentState = STATE_ORBITING;
 	}
 	public void StartTraveling(){
@@ -105,7 +105,7 @@ public class MetalNavigation : MonoBehaviour {
 	}
 
 	public void ProcessOrbiting(){
-		Debug.Log ("Orbiting");
+		//Debug.Log ("Orbiting");
 		if(!nav._waiting){
 			StartTraveling();
 		}
@@ -115,7 +115,7 @@ public class MetalNavigation : MonoBehaviour {
 	}
 
 	private void ProcessTraveling(){
-		Debug.Log ("Traveling");
+		//Debug.Log ("Traveling");
 		if(nav._atNext){
 			currentSystem = nextSystem;
 			nav._waiting = true;
@@ -166,7 +166,7 @@ public class MetalNavigation : MonoBehaviour {
 		//Check to make sure the starting system isn't the target system
 		if(currentSystem == targetSystem){
 			//If it is then we set all these to true so the  ship sends it arrival info on next tick
-			Debug.Log ("Created me at the target system");
+			//Debug.Log ("Created me at the target system");
 			nav._arrived = true;
 			nav._activated = true;
 			nav._waiting = true;
@@ -182,7 +182,7 @@ public class MetalNavigation : MonoBehaviour {
 		}
 		nav._activated = true;
 		StartOrbiting();
-		Debug.Log("current state: " + currentState);
+		//Debug.Log("current state: " + currentState);
 	}
 	//Moves the ship through the lane it was waiting on maybe not needed?
 	public void EndWait(){

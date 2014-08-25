@@ -35,7 +35,8 @@ public class LaneBuilder : MonoBehaviour
                 //Debug.Log("castPos : " + castPos.x + ", " + castPos.y + ", " + castPos.z);
 
                 RaycastHit2D hit = Physics2D.CircleCast(mousepos, 1, Vector2.right);
-                if (hit.transform != null)
+                GameObject hitObj = hit.transform.gameObject;
+                if (hitObj.tag == "System" && hitObj != firstSystem)
                 {
                     lineRenderer = null;
                     secondSystem = hit.transform.gameObject;
@@ -47,10 +48,17 @@ public class LaneBuilder : MonoBehaviour
 
                     laneController.system1 = sys1Controller;
                     laneController.system2 = sys2Controller;
+                    if (!sys2Controller.lanes.ContainsKey(sys1Controller))
+                    {
+                        sys1Controller.lanes.Add(sys2Controller, laneController);
+                        sys2Controller.lanes.Add(sys1Controller, laneController);
 
-                    sys1Controller.lanes.Add(sys2Controller, laneController);
-                    sys2Controller.lanes.Add(sys1Controller, laneController);
-
+                    }
+                    else
+                    {
+                        Destroy(lane.gameObject);
+                    }
+                    
                     Debug.Log(hit.transform.gameObject.name);
                     //lineRenderer.enabled = false;
                     setup = false;
