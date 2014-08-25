@@ -5,7 +5,7 @@ public class StarDistributor : MonoBehaviour {
 
 	public GameObject starPrefab; // set in the inspector
     private int starCount = 15000 * 2;
-    private float starFieldSphereSize = 500;
+    private float starFieldSphereSize = 300;
     public Mesh mesh;
     public Material starMat0;
     public Material starMat1;

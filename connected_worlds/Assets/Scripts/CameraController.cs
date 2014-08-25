@@ -8,13 +8,23 @@ public class CameraController : MonoBehaviour {
 	public float moveSpeed = 10;
 	public float pixelBuffer = 50f;
 
+    public GUISkin spaceLaneSkin;
+    public GUISkin systemLabelSkin;
+
+    private GameObject gui;
+    private GuiManager guiManager; 
+
 	private BoxCollider2D box;
 	private List<GameObject> systems = new List<GameObject>();
 
 	// Use this for initialization
 	void Start () {
+
+        gui = GameObject.FindGameObjectWithTag("GuiContainer");
+        guiManager = gui.GetComponent<GuiManager>();
+
 		box = GetComponent<BoxCollider2D>();
-        box.size = new Vector2((camera.pixelWidth + pixelBuffer) / 50, (camera.pixelHeight + pixelBuffer) / 50);//new Vector2((camera.pixelWidth + pixelBuffer) / 100, (camera.pixelHeight + pixelBuffer) / 100);
+        box.size = new Vector2((50) , (50) );//new Vector2((camera.pixelWidth + pixelBuffer) / 100, (camera.pixelHeight + pixelBuffer) / 100);
 
 	}
 	
@@ -29,6 +39,11 @@ public class CameraController : MonoBehaviour {
 			v = Input.GetAxis("Vertical") * moveSpeed * Time.deltaTime;
 		}
 		transform.position += new Vector3(h, v, 0f);
+
+        //update the visible object lists in the gui manager
+        guiManager.systems = systems;
+        guiManager.camera = camera;
+
 	}
 	
 	void OnTriggerEnter2D(Collider2D collider){
@@ -43,23 +58,33 @@ public class CameraController : MonoBehaviour {
 		}
 	}
 
+
+    /*
 	void OnGUI(){
+        /*
 		for(int i = 0; i < systems.Count; i++){
 			SystemControllerTest systemInfo = systems[i].GetComponent<SystemControllerTest>();
 			Vector3 systemPos = camera.WorldToScreenPoint(systems[i].transform.position);
 			float metal = systemInfo.GetMetalPerTurn();
             float units = systemInfo.GetUnitsPerTurn();
 			float yPos = camera.pixelHeight - systemPos.y;
+            GUI.skin = systemLabelSkin; 
 			GUI.Box (new Rect(systemPos.x - 50, yPos - 50, 120, 25), "metal : " + metal + " units : " + units);
+            GUI.skin = null; 
             GUI.Label(new Rect(systemPos.x - 50, yPos + 20, 100, 25), systemInfo.getName());
 		}
 
         //draw larger menu 
+        /*
         float menuBoxHeight = 140 * 1.3f;
         float menuBoxWidth = 140 * 1.3f;
         float menuBarHeight = 120 * 1.3f;
         float menuBarWidth = Screen.width - menuBoxWidth - 10;
         GUI.Box(new Rect(0 + 5, Screen.height - menuBoxHeight - 5, menuBoxWidth, menuBoxHeight), "TEST");
+        GUI.skin = spaceLaneSkin; 
         GUI.Box(new Rect(0 + 5 + menuBoxWidth + 1, Screen.height - menuBarHeight - 5, menuBarWidth, menuBarHeight), "TEST");
-	}
+        GUI.skin = null;
+         * */
+	//}
+    
 }

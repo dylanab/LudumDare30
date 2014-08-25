@@ -10,7 +10,12 @@ public class SystemControllerTest : MonoBehaviour {
 
 	public float metalPerTurn = 0f;
 	public float unitsPerTurn = 0f;
+
+    //Diff
+    public string buildingType = "";
+    public int buildingLevel = 0;
 	private bool slotFilled = false;
+    public string name; 
 
 	//Update Time variables (used for debug, won't be located here in final version)
 	private float updateInterval = 3f;
@@ -20,8 +25,6 @@ public class SystemControllerTest : MonoBehaviour {
 	private List<LaneController> outgoingLanes = new List<LaneController>();
 	private List<LaneController> incomingLanes = new List<LaneController>();
 
-    //DIFF
-    private string name; 
 
 	#endregion
 
@@ -40,6 +43,23 @@ public class SystemControllerTest : MonoBehaviour {
 			currenTime = 0;
 		}
 	}
+
+    public void buildBuilding(string type)
+    {
+        //TODO: some way to
+        if (type == "production")
+        {
+            //Instantiate(productionPrefab, this.gameObject.transform.position, Quaternion.identity);
+            buildingType = "production";
+            buildingLevel = 1;
+        }
+        else if (type == "mining")
+        {
+            //Instantiate(miningPrefab, this.gameObject.transform.position, Quaternion.identity);
+            buildingType = "mining";
+            buildingLevel = 1;
+        }
+    }
 
 
 	#endregion
@@ -90,12 +110,6 @@ public class SystemControllerTest : MonoBehaviour {
 			}
 		}
 	}
-
-    //DIFF
-    public string getName()
-    {
-        return name;
-    }
 
 	#endregion
 }
