@@ -45,8 +45,11 @@ public class LaneController : MonoBehaviour {
 
 	private void MoveShips(){
 		for(int i = 0; i < upgradeLevel; i++){
-			Navigation nextShip = waitingShips.Dequeue().GetComponent<Navigation>() as Navigation;
-			nextShip.endWait();
+			GameObject nextShip = waitingShips.Dequeue();
+			if(nextShip.tag == "Metal")
+				nextShip.GetComponent<MetalNavigation>().EndWait();
+			else
+				nextShip.GetComponent<WarshipNavigation>().EndWait();
 		}
 	}
 

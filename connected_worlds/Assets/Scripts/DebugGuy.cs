@@ -7,6 +7,8 @@ public class DebugGuy : MonoBehaviour {
 	public SystemController start;
 	public SystemController end;
 
+	void Start(){
+	}
 	// Update is called once per frame
 	void Update () {
 		if(Input.GetButtonDown("Jump")){
@@ -22,5 +24,8 @@ public class DebugGuy : MonoBehaviour {
 		for(int i = 0; i < r.Count; i++){
 			Debug.Log ("Step " + i+1 + ": " + r[i].name);
 		}
+	}
+
+	void DebugTick(){
 	}
 }

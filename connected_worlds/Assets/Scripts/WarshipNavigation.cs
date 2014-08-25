@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class WarshipController : MonoBehaviour {
+public class WarshipNavigation : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
@@ -11,5 +11,9 @@ public class WarshipController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 	
+	}
+
+	public void EndWait(){
+
 	}
 }

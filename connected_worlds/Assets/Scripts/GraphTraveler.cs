@@ -37,7 +37,6 @@ public class GraphTraveler : Singleton<GraphTraveler> {
 		//Contine to search until we've found the target
 		while(!done){
 			counter++;
-			Debug.Log ("Loop trips: " + counter);
 			//If there are no system in the open set return null and throw error
 			if(openSet.Count == 0){
 				Debug.LogError ("Could not find route to target");
@@ -80,6 +79,8 @@ public class GraphTraveler : Singleton<GraphTraveler> {
 			route.Add(currentSystem);
 			currentSystem = closedSet[currentSystem];
 		}while(closedSet[currentSystem] != null);
+
+		route.Reverse();
 
 		return route;
 	}

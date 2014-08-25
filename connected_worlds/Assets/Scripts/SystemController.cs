@@ -16,8 +16,8 @@ public class SystemController : MonoBehaviour {
 	public GameObject facility;
 	public string owner = "Player"; //DEBUG HARD CODED VALUE
 
-	private List<MetalController> metalHere = new List<MetalController>();
-	private List<WarshipController> warshipsHere = new List<WarshipController>();
+	private List<MetalNavigation> metalHere = new List<MetalNavigation>();
+	private List<WarshipNavigation> warshipsHere = new List<WarshipNavigation>();
 
 	#endregion
 
@@ -52,9 +52,9 @@ public class SystemController : MonoBehaviour {
 	//Remove a ship from this system's list of ships
 	public void RemoveShip(GameObject ship){
 		if(ship.tag == "Metal")
-			metalHere.Remove(ship.GetComponent<MetalController>());
+			metalHere.Remove(ship.GetComponent<MetalNavigation>());
 		else if(ship.tag == "Warship")
-			warshipsHere.Remove(ship.GetComponent<WarshipController>());
+			warshipsHere.Remove(ship.GetComponent<WarshipNavigation>());
 		else
 			Debug.LogError("Tried to remove a ship from " + this.name + " that is not a recognized ship type.");
 	}
@@ -62,9 +62,9 @@ public class SystemController : MonoBehaviour {
 	//Add a ship to this system's list of ships
 	public void AddShip(GameObject ship){
 		if(ship.tag == "Metal")
-			metalHere.Add(ship.GetComponent<MetalController>());
+			metalHere.Add(ship.GetComponent<MetalNavigation>());
 		else if(ship.tag == "Warship")
-			warshipsHere.Add(ship.GetComponent<WarshipController>());
+			warshipsHere.Add(ship.GetComponent<WarshipNavigation>());
 		else
 			Debug.LogError("Tried to add a ship to " + this.name + " that is not a recognized ship type.");
 	}

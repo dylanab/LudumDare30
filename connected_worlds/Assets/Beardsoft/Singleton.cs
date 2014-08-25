@@ -32,6 +32,7 @@ namespace Beardsoft.Singleton{
 						//If we haven't created any singletons yet let's make one :D
 						if(_instance == null){
 							string singletonName = "Singleton(" + typeof(T).Name + ")";
+							Debug.Log("Creating " + singletonName);
 							_instance = new GameObject(singletonName).AddComponent<T>();
 						}
 					}
