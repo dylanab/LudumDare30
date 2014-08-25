@@ -44,7 +44,7 @@ public class MetalNavigation : MonoBehaviour {
 
 	#region MonoBehavior Implementation
 	// Use this for initialization
-	void Awake(){
+	void Awake() {
 		nav._waiting = false;		//Whether the ship is currently in a queue to jump (so it can ignore move ticks)
 		nav._activated = false;	//Flag to tell the ship all of its parameters have been set, if this is false most checks will not run
 		nav._atNext = false;		//Whether or not the ship is at the system set to currentSystem
@@ -53,13 +53,13 @@ public class MetalNavigation : MonoBehaviour {
 		Debug.Log("AWAKE");
 	}
 
-	void Start (){
+	void Start () {
 
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		Debug.Log(nav._activated);
+		Debug.Log(nav._waiting);
 		if(currentState == STATE_ORBITING){
 			ProcessOrbiting();
 		}
@@ -68,9 +68,9 @@ public class MetalNavigation : MonoBehaviour {
 		}
 	}
 
-	void OnTriggerEnter2D(Collider2D collider){
+	void OnTriggerEnter2D(Collider2D collider) {
 		if(nav._activated){
-			if(collider.gameObject.name == nextSystem.name){
+			if(collider.gameObject == nextSystem.gameObject){
 				rigidbody2D.velocity = Vector2.zero;
 				nav._atNext = true;
 			}

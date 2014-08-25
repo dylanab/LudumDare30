@@ -32,8 +32,13 @@ public class LaneController : MonoBehaviour {
 
 	#region MonoBehavior Implementation
 
+    void Awake()
+    {
+        upgradeLevel = 1;
+    }
+
 	void Start () {
-		//TO DO: Subscribe MoveShips to some tick event
+        TimeCounter.MoveTick += this.MoveShips;
 	}
 	
 	void Update () {
@@ -71,7 +76,8 @@ public class LaneController : MonoBehaviour {
 	}
 
 	private void MoveShips(){
-		for(int i = 0; i < upgradeLevel; i++){
+		for(int i = 0; i < Mathf.Min(upgradeLevel, waitingShips.Count); i++){
+            Debug.Log("Moving a shit");
 			GameObject nextShip = waitingShips.Dequeue();
 			if(nextShip.tag == "Metal")
 				nextShip.GetComponent<MetalNavigation>().EndWait();

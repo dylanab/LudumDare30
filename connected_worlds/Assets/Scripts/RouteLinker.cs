@@ -33,9 +33,13 @@ public class RouteLinker : MonoBehaviour
                 {
                     lineRenderer = null;
                     secondSystem  = hit.transform.gameObject.GetComponent<SystemController>();
-                    if (secondSystem.buildingType == "production")
+                    if (secondSystem.buildingType == "production" && secondSystem.facility != null)
                     {
                         firstSystem.mineController.SetupRoute(firstSystem, secondSystem);
+                        firstSystem.mineController.tarFacility = secondSystem.facility;
+                        firstSystem.mineController.thisSystem = firstSystem;
+                        firstSystem.mineController.tarSystem = secondSystem;
+                        firstSystem.mineController.mine = true;
                     }
 
                     Destroy(LineRendererObj);

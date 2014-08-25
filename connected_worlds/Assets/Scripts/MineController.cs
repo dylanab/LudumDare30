@@ -6,6 +6,7 @@ public class MineController : MonoBehaviour {
 
     //private int metal;
     public int level;
+    public bool mine;
     //private int upgradePool;
 
 
@@ -16,6 +17,11 @@ public class MineController : MonoBehaviour {
     public SystemController tarSystem;
     public GameObject tarFacility;
     public List<SystemController> route;
+
+    void Awake()
+    {
+        mine = false;
+    }
 
 	// Use this for initialization
 	void Start () {
@@ -42,9 +48,10 @@ public class MineController : MonoBehaviour {
     public void ProduceMetal()
     {
         
-        if (route.Count > 1) {
+        if (mine) {
             for (int i = 0; i < level; i++)
             {
+                Debug.Log("tarFacility" + tarFacility.name + " , " + "tarSystem" + tarSystem.name + " , " + "thisSystem" + thisSystem.name);
                 GameObject metalShit = Instantiate(MetalShipPrefab, this.gameObject.transform.position, Quaternion.identity) as GameObject;
                 metalShit.GetComponent<MetalNavigation>().Activate(tarFacility, tarSystem, thisSystem, route);
             }
