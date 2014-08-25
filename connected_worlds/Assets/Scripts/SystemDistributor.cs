@@ -4,8 +4,8 @@ using System.Collections;
 public class SystemDistributor : MonoBehaviour {
 
 	public GameObject SystemPrefab; // set in the inspector
-    private int systemCount = 70;
-    private float mapSize = 40;
+    public int systemCount = 70;
+    public float mapSize = 40;
     public Mesh mesh;
     public Material sysMat0;
     public Material sysMat1;
