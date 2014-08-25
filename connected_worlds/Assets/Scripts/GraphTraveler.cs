@@ -77,7 +77,8 @@ public class GraphTraveler : Singleton<GraphTraveler> {
 		//currentSystem is the targetSystem right now add currentSystem to the return list
 		do{
 			route.Add(currentSystem);
-			currentSystem = closedSet[currentSystem];
+			if(closedSet[currentSystem] != null)
+				currentSystem = closedSet[currentSystem];
 		}while(closedSet[currentSystem] != null);
 
 		route.Reverse();
