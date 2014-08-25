@@ -11,8 +11,8 @@ public class GuiManager : Singleton<GuiManager>
     public GameObject starPrefab;
     public GameObject SpaceLane;
     public GameObject LineRendererPrefab;
-    public GameObject ProductionFacilityPrefab;
-    public GameObject MiningFacilityPrefab;
+    //public GameObject ProductionFacilityPrefab;
+    //public GameObject MiningFacilityPrefab;
 
     public GUISkin guiSkin;
     public List<GameObject> systems;
@@ -25,6 +25,8 @@ public class GuiManager : Singleton<GuiManager>
     private string objectName;
     private string objectType;
     private Texture objectTexture;
+
+    public SystemController tarSystem;
 
     public AudioSource audio; 
     public AudioClip clickSound;
@@ -140,7 +142,7 @@ public class GuiManager : Singleton<GuiManager>
 
             GUI.Label(new Rect(0 + menuBoxWidth + (menuBarWidth * .55f), Screen.height - (menuBoxHeight * .8f) + 20, 100, 40), "Build Facilities", "blanklabel");
             GUI.Label(new Rect(0 + menuBoxWidth + (menuBarWidth * .25f), Screen.height - (menuBoxHeight * .8f) + 20, 100, 40), "Build Space Lanes", "blanklabel");
-            if (GUI.Button(new Rect(0 + menuBoxWidth + (menuBarWidth * .25f), Screen.height - (menuBoxHeight * .5f) + 40 + 10, 200, 30), "Create a Space Lane -  50 metal"))
+            if (GUI.Button(new Rect(0 + menuBoxWidth + (menuBarWidth * .25f), Screen.height - (menuBoxHeight * .5f) + 40 + 10, 200, 30), "Create a Space Lane"))
             {
                 audio.PlayOneShot(clickSound);
                 LaneBuilder laneBuilder = this.gameObject.AddComponent<LaneBuilder>();
@@ -150,17 +152,15 @@ public class GuiManager : Singleton<GuiManager>
 
             if (sysInfo.buildingType == "")
             {
-                if (GUI.Button(new Rect(0 + menuBoxWidth + (menuBarWidth * .55f), Screen.height - (menuBoxHeight * .5f) + 10, 200, 30), "Create a Factory -  50 metal"))
+                if (GUI.Button(new Rect(0 + menuBoxWidth + (menuBarWidth * .55f), Screen.height - (menuBoxHeight * .5f) + 10, 200, 30), "Create a Factory"))
                 {
-
+                    
                     sysInfo.buildBuilding("production");
                     audio.PlayOneShot(buildSound);
-
                     //objectTexture = productionIcon;
-
                 }
 
-                if (GUI.Button(new Rect(0 + menuBoxWidth + (menuBarWidth * .55f), Screen.height - (menuBoxHeight * .5f) + 40 + 10, 200, 30), "Create a Mine -  50 metal"))
+                if (GUI.Button(new Rect(0 + menuBoxWidth + (menuBarWidth * .55f), Screen.height - (menuBoxHeight * .5f) + 40 + 10, 200, 30), "Create a Mine"))
                 {
                     sysInfo.buildBuilding("mining");
                     audio.PlayOneShot(buildSound);
@@ -188,7 +188,6 @@ public class GuiManager : Singleton<GuiManager>
                         prod.AddMetal(1);
                         Debug.Log("adding one metal");
                         Debug.Log("metal : " + prod.metal);
-                        //audio.PlayOneShot(buildSound);
                     }
                 }
             }
@@ -200,12 +199,29 @@ public class GuiManager : Singleton<GuiManager>
                 }
                 else
                 {
-                    GUI.Label(new Rect(0 + menuBoxWidth + (menuBarWidth * .55f), Screen.height - (menuBoxHeight * .5f) + 10, 200, 30), "building level : " + sysInfo.buildingLevel, "blanklabel");
-                    if (GUI.Button(new Rect(0 + menuBoxWidth + (menuBarWidth * .55f), Screen.height - (menuBoxHeight * .5f) + 40 + 10, 200, 30), "Upgrade Mine - " + (sysInfo.buildingLevel * 5) ))
+                    //GUI.Label(new Rect(0 + menuBoxWidth + (menuBarWidth * .55f), Screen.height - (menuBoxHeight * .5f) + 10, 200, 30), "building level : " + sysInfo.buildingLevel, "blanklabel");
+                   // if (GUI.Button(new Rect(0 + menuBoxWidth + (menuBarWidth * .55f), Screen.height - (menuBoxHeight * .5f) + 40 + 10, 200, 30), "Upgrade Mine - " + (sysInfo.buildingLevel * 5) ))
+                   // {
+                       // sysInfo.buildBuilding("mining");
+                        //audio.PlayOneShot(buildSound);
+                    //}
+                    if (GUI.Button(new Rect(0 + menuBoxWidth + (menuBarWidth * .55f), Screen.height - (menuBoxHeight * .5f) + 10, 200, 30), "Assign Route" + (sysInfo.buildingLevel * 5)))
                     {
-                        sysInfo.buildBuilding("mining");
+                        RouteLinker routeLinker = this.gameObject.AddComponent<RouteLinker>();
+                        GameObject lineRenderer = Instantiate(LineRendererPrefab, this.gameObject.transform.position, Quaternion.identity) as GameObject;
+                        routeLinker.placeLineStart(target, lineRenderer);
+
                         audio.PlayOneShot(buildSound);
                     }
+                    if (sysInfo.mineController.tarSystem == null)
+                    {
+                        GUI.Label(new Rect(0 + menuBoxWidth + (menuBarWidth * .55f), Screen.height - (menuBoxHeight * .5f) + 50, 200, 30), "Metal Destination : None", "blanklabel");
+                    }
+                    else
+                    {
+                        GUI.Label(new Rect(0 + menuBoxWidth + (menuBarWidth * .55f), Screen.height - (menuBoxHeight * .5f) + 50, 200, 30), "Metal Destination : " + sysInfo.mineController.tarSystem.name, "blanklabel");
+                    }
+                    
                 }
             }
                 

@@ -41,8 +41,15 @@ public class LaneBuilder : MonoBehaviour
                     secondSystem = hit.transform.gameObject;
                     GameObject lane = Instantiate(SpaceLane, firstSystem.transform.position, Quaternion.identity) as GameObject;
                     LaneController laneController = lane.GetComponent<LaneController>();
-                    laneController.system1 = firstSystem.GetComponent<SystemController>();
-                    laneController.system2 = secondSystem.GetComponent<SystemController>();
+
+                    SystemController sys1Controller = firstSystem.GetComponent<SystemController>();
+                    SystemController sys2Controller = secondSystem.GetComponent<SystemController>();
+
+                    laneController.system1 = sys1Controller;
+                    laneController.system2 = sys2Controller;
+
+                    sys1Controller.lanes.Add(sys2Controller, laneController);
+                    sys2Controller.lanes.Add(sys1Controller, laneController);
 
                     Debug.Log(hit.transform.gameObject.name);
                     //lineRenderer.enabled = false;

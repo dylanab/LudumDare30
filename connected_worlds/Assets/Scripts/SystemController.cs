@@ -116,9 +116,10 @@ public class SystemController : MonoBehaviour {
         else if (type == "mining" && buildingType == "")
         {
             facility = Instantiate(MiningFacilityPrefab, this.gameObject.transform.position, Quaternion.identity) as GameObject;
+            mineController = facility.GetComponent<MineController>();
             buildingType = "mining";
             //DEBUG: Normally this would be set to 0
-            buildingLevel = prodController.level = 1;
+            buildingLevel = mineController.level = 1;
         }
     }
 
